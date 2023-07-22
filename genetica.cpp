@@ -2,19 +2,81 @@
 //
 
 #include <iostream>
+#include <bitset>
+
+#include "genetica.h"
+
+using namespace std;
+
+
 
 int main()
-{
-    std::cout << "Hello World!\n";
+{	
+	struct Mochila mochila;
+
+	int arrayNums[6] = {};
+	int countItems = 0;
+	int value = 0;
+	int weight = 0;
+	int num = 0;
+	int i,j;
+	char bitIs = '1';
+	unsigned char mascara = 5;
+	string binary;
+	
+	for (i = 0; i <= 5; i++) {
+		cout << "digite um numero: ";
+		cin >> arrayNums[i];
+	}
+
+
+	for (i = 0; i < sizeof(arrayNums) / 4; i++) {
+		binary = bitset<16>(arrayNums[i]).to_string();
+		value = 0;
+		weight = 0;
+		for (j = 0; j <= 15; j++) {
+			if (binary[j] == bitIs) {
+				value += mochila.arrayValue[j];
+				weight += mochila.arrayWeight[j];
+				countItems++;
+			}
+		}
+
+		if (weight > mochila.weightLimit) {
+			cout << "========================================================\n";
+			cout << "Numero testado: " << arrayNums[i] << "\nValor: " << value << "\nPeso: " << weight << "KG" << "\n" 
+			<< "Qauntidade de items: " << countItems << "\n";
+
+			cout << "O a mochila rasgou !! Tome mais cuidado com o peso e a quantidade de items 'Limite e : 20KG'\n";
+			cout << "========================================================\n";
+		}
+		else if(countItems > mochila.slotsLimit){
+			cout << "========================================================\n";
+			cout << "Numero testado: " << arrayNums[i] << "\nValor: " << value << "\nPeso: " << weight << "KG" << "\n"
+			<< "Qauntidade de items: " << countItems << "\n";
+
+			cout << "O a mochila rasgou !! Tinha muitos items 'Limite e : 16'\n";
+			cout << "========================================================\n";
+		}
+		else if (value > 40) {
+			cout << "========================================================\n";
+			cout << "Numero testado: " << arrayNums[i] << "\nValor: " << value << "\nPeso: " << weight << "KG" << "\n"
+			<< "Qauntidade de items: " << countItems << "\n";
+			cout << "Bom saque mas pode ser melhor da proxima vez\n";
+			cout << "========================================================\n";
+		}
+		else if (value < 40) {
+			cout << "========================================================\n";
+			cout << "Numero testado: " << arrayNums[i] << "\nValor: " << value << "\nPeso: " << weight << "KG" << "\n"
+			<< "Qauntidade de items: " << countItems << "\n";
+			cout << "O saque foi um fracasso tente novamente\n";
+			cout << "========================================================\n";
+		}
+
+	}
+	
+
+	
+
+	
 }
-
-// Executar programa: Ctrl + F5 ou Menu Depurar > Iniciar Sem Depuração
-// Depurar programa: F5 ou menu Depurar > Iniciar Depuração
-
-// Dicas para Começar: 
-//   1. Use a janela do Gerenciador de Soluções para adicionar/gerenciar arquivos
-//   2. Use a janela do Team Explorer para conectar-se ao controle do código-fonte
-//   3. Use a janela de Saída para ver mensagens de saída do build e outras mensagens
-//   4. Use a janela Lista de Erros para exibir erros
-//   5. Ir Para o Projeto > Adicionar Novo Item para criar novos arquivos de código, ou Projeto > Adicionar Item Existente para adicionar arquivos de código existentes ao projeto
-//   6. No futuro, para abrir este projeto novamente, vá para Arquivo > Abrir > Projeto e selecione o arquivo. sln
