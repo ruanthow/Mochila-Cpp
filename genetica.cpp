@@ -3,36 +3,43 @@
 
 #include <iostream>
 #include <bitset>
-#include <string>
 #include "genetica.h"
+#include<windows.h>
 
 using namespace std;
 
 
 
 int main()
-{	
+{
 	struct Mochila mochila;
-	int arrayNums[6] = {};
-	int countItems = 0;
-	int value = 0;
-	int weight = 0;
-	int num = 0;
-	int i,j;
-	int result = 0;
+	unsigned short arrayNums[6] = {};
+	unsigned char countItems = 0;
+	unsigned char value = 0;
+	unsigned char weight = 0;
+	unsigned int num = 0;
+	unsigned char i,j;
 	char bitIs = '1';
 	unsigned char mascara = 5;
 	string binary;
 	
 	for (i = 0; i <= 5; i++) {
-		srand((unsigned)time(NULL));
-		cout << "digite um numero: ";
-		num = rand();
-		arrayNums[i] = num;
+		cout << "Digite um numero: ";
+		cin >> num;
+		if (num < 0 || num > 65535) {
+			cout << "Range minimo e : 0. E o maximo e : 65535.";
+			Sleep(3000);
+			system("cls");
+			i--;
+		}
+		else {
+			arrayNums[i] = num;
+		}
+		
 	}
 
 	//convertendo numero decimal em numero binario.
-	for (i = 0; i < sizeof(arrayNums) / 4; i++) {
+	for (i = 0; i < sizeof(arrayNums) / 2; i++) {
 		binary = bitset<16>(arrayNums[i]).to_string();
 		value = 0;
 		weight = 0;
@@ -44,68 +51,37 @@ int main()
 			}
 		}
 
-		if (weight > mochila.weightLimit) {
-			cout << "========================================================\n";
-			cout << "Numero testado: " << arrayNums[i] << "\nValor: " << value << "\nPeso: " << weight << "KG" << "\n"
-				<< "Qauntidade de items: " << countItems << "\n";
-
-			cout << "O a mochila rasgou !! Tome mais cuidado com o peso e a quantidade de items 'Limite e : 20KG'\n";
-			cout << "========================================================\n";
-		}
-		else if (countItems > mochila.slotsLimit) {
-			cout << "========================================================\n";
-			cout << "Numero testado: " << arrayNums[i] << "\nValor: " << value << "\nPeso: " << weight << "KG" << "\n"
-				<< "Qauntidade de items: " << countItems << "\n";
-
-			cout << "O a mochila rasgou !! Tinha muitos items 'Limite e : 16'\n";
-			cout << "========================================================\n";
-		}
-		else if (value > 40) {
-			cout << "========================================================\n";
-			cout << "Numero testado: " << arrayNums[i] << "\nValor: " << value << "\nPeso: " << weight << "KG" << "\n"
-				<< "Qauntidade de items: " << countItems << "\n";
-			cout << "Bom saque mas pode ser melhor da proxima vez\n";
-			cout << "========================================================\n";
-		}
-		else if (value < 40) {
-			cout << "========================================================\n";
-			cout << "Numero testado: " << arrayNums[i] << "\nValor: " << value << "\nPeso: " << weight << "KG" << "\n"
-				<< "Qauntidade de items: " << countItems << "\n";
-			cout << "O saque foi um fracasso tente novamente\n";
-			cout << "========================================================\n";
-		}
+		feedbackMochila(weight, arrayNums[i], value, countItems);
+		
 
 	};
-	cruzamento(arrayNums, result);
+	cruzamento(arrayNums);
 	
 }
 
-int cruzamento(int arrayAandB[], int result)
+int cruzamento(unsigned short arrayNums[])
 {
-	system("cls");
+	
 
 	// 0000 0000 0000 0000
 	int mascara = 0; 
-	int num2 = 0;
-	int num = 61257;
-	int t = 0;
-	int newbit = 0;
+	int num2 = arrayNums[1];
+	int num = arrayNums[0];
+	int lastBinary = 0;
+	int currentBinary = 0;
 	
-	//pegar os primeiros 8 bits andando 8 bits para tras fazendo ficar e voltando 8 bits zerados pra frente
+	//pegar os primeiros 8 bits andando 8 bits para tras e voltando 8 bits zerados pra frente
 	// exemplo 1111 1111 1111 1111 >>  0000 0000 1111 1111 << 1111 1111 0000 0000
-	newbit = arrayAandB[0] >> 8 << 8;
-	t = newbit;
+	currentBinary = arrayNums[0] >> 8 << 8;
+	lastBinary = currentBinary;
 	cout << "Numero:      " << bitset<16>(num).to_string() << endl;
 	cout << "Mascara:     " << bitset<16>(mascara).to_string() << endl;
-	cout << "Novo numero: " << bitset<16>(newbit).to_string() << endl;
-	cout << "numero:      " << newbit;
+	cout << "Novo numero: " << bitset<16>(currentBinary).to_string() << endl;
+	cout << "numero:      " << currentBinary;
 	
 	//newbit = 1111 1111 0000 0000
+ 
 
-	//0000 0000 1111 1111
-	num2 = arrayAandB[1]; 
-	
-	
 	// antiga mascara = 0000 0000 0000 0000
 	// nova mascara = 0000 0000 1111 1111
 	mascara = num2;
@@ -113,14 +89,37 @@ int cruzamento(int arrayAandB[], int result)
 	
 	//1111 1111 0000 0000
 	//0000 0000 1111 1111
-	newbit = mascara | newbit;
+	currentBinary = mascara | currentBinary;
 	
 	// newbit = 1111 1111 1111 1111
-	cout << "\n\n\nNumero 1:    " << bitset<16>(t).to_string() << endl;
+	cout << "\n\n\nNumero 1:    " << bitset<16>(lastBinary).to_string() << endl;
 	cout << "Numero 2:    " << bitset<16>(mascara).to_string() << endl;
-	cout << "Novo numero: " << bitset<16>(newbit).to_string() << endl;
-	cout << "numero:      " << newbit;
+	cout << "Novo numero: " << bitset<16>(currentBinary).to_string() << endl;
+	cout << "numero:      " << currentBinary;
 
 
 	return 1;
 }
+
+void feedbackMochila(unsigned short weight, unsigned short currentNumberOfArray, unsigned char value, unsigned char countItems) {
+	
+	struct Mochila mochila;
+	
+	if (weight > mochila.weightLimit) {
+		cout << "------------------------------------------- \n";
+		cout << currentNumberOfArray << " - " << +countItems << "Qtd" << " - " << "$" << +value << " - " << weight << "KG" << " - " << "X \n";
+		
+	}
+	else if (countItems > mochila.slotsLimit) {
+		cout << "-------------------------------------------\n";
+		cout << currentNumberOfArray << " - " << +countItems << "Qtd" << " - " << "$" << +value << " - " << weight << "KG" << " - " << "X \n";
+	}
+	else if (value > 40) {
+		cout << "-------------------------------------------\n";
+		cout << currentNumberOfArray << " - " << +countItems << "Qtd" << " - " << "$" << +value << " - " << weight << "KG" << " - " << "OK \n";
+	}
+	else if (value < 40) {
+		cout << "-------------------------------------------\n";
+		cout << currentNumberOfArray << " - " << +countItems << "Qtd" << " - " << "$" << +value << " - " << weight << "KG" << " - " << "OK \n";
+	}
+};

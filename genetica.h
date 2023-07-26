@@ -5,4 +5,6 @@ struct Mochila {
 	int arrayValue[16] = { 4, 4, 8, 10, 15, 3, 1, 1, 2, 10, 20, 15, 10, 3, 4, 12 };
 };
 
-int cruzamento(int arrayAandB[], int result);
+int cruzamento(unsigned short arrayNums[]);
+
+void feedbackMochila(unsigned short weight, unsigned short currentNumberOfArray, unsigned char value, unsigned char countItems);
