@@ -5,10 +5,14 @@ struct Bag {
 	int arrayValue[16] = { 4, 4, 8, 10, 15, 3, 1, 1, 2, 10, 20, 15, 10, 3, 4, 12 };
 };
 
-int geneticCross(unsigned short arrayNums[]);
+void geneticCross(unsigned short arrayNums[]);
 
-int crossArithmetic(unsigned short arrayNums[]);
+void crossArithmetic(unsigned short arrayNums[]);
 
 void feedbackBag(unsigned short weight, unsigned short currentNumberOfArray, unsigned char value, unsigned char countItems);
 
 void calculatorWeightAndValue(unsigned short number);
+
+void mutation(unsigned short arrayNums[]);
+
+void doubleMutation(unsigned short arrayNums[]);

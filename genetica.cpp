@@ -46,9 +46,11 @@ int main()
 	cout << "\n\nNovas tentativas com cruzamentos geneticos. \n";
 	geneticCross(arrayNums);
 	crossArithmetic(arrayNums);
+	mutation(arrayNums);
+	doubleMutation(arrayNums);
 }
 
-int geneticCross(unsigned short arrayNums[])
+void geneticCross(unsigned short arrayNums[])
 {
 	
 
@@ -76,7 +78,6 @@ int geneticCross(unsigned short arrayNums[])
 	// currentBinary = 1111 1111 1111 1111
 	calculatorWeightAndValue(currentBinary);
 
-	return 1;
 }
 
 void calculatorWeightAndValue(unsigned short number) {
@@ -103,14 +104,12 @@ void calculatorWeightAndValue(unsigned short number) {
 	feedbackBag(weight, number, value, countItems);
 }
 
-int crossArithmetic(unsigned short arrayNums[]) {
+void crossArithmetic(unsigned short arrayNums[]) {
 	unsigned short newBinary = 0;
 
-	newBinary = arrayNums[0] ^ arrayNums[1];
+	newBinary = arrayNums[0] & arrayNums[1];
 
 	calculatorWeightAndValue(newBinary);
-	return 0;
-
 }
 
 void feedbackBag(unsigned short weight, unsigned short currentNumberOfArray, unsigned char value, unsigned char countItems) {
@@ -135,3 +134,43 @@ void feedbackBag(unsigned short weight, unsigned short currentNumberOfArray, uns
 		cout << currentNumberOfArray << " - " << +countItems << "Qtd" << " - " << "$" << +value << " - " << weight << "KG" << " - " << "OK \n";
 	}
 };
+
+void mutation(unsigned short arrayNums[]) {
+	unsigned short mascara = 1;
+	unsigned short newNumber = 0;
+
+	// mascara para mudar a decima posicao
+	mascara = mascara << 9;
+	
+	//modificar um unico bit
+	newNumber = arrayNums[2] | mascara;
+	
+	//caso o bit seja 1 o numero continuará o mesmo sendo assim o if modifica a operação de bit para geral um novo numero.
+	if (arrayNums[2] == newNumber) {
+		newNumber = arrayNums[2] ^ mascara;
+		calculatorWeightAndValue(newNumber);
+	}
+	else {
+		calculatorWeightAndValue(newNumber);
+	}
+}
+
+void doubleMutation(unsigned short arrayNums[]) {
+	unsigned short mascara = 4104;
+	unsigned short newNumber = 0;
+
+	//modificar dois bits
+	newNumber = arrayNums[3] | mascara;
+	
+
+	//caso o bit seja 1 o numero continuará o mesmo sendo assim o if modifica a operação de bit para geral um novo numero.
+	if (arrayNums[3] == newNumber) {
+		newNumber = arrayNums[3] ^ mascara;
+		calculatorWeightAndValue(newNumber);
+		
+
+	}
+	else {
+		calculatorWeightAndValue(newNumber);
+	}
+}
